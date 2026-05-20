@@ -1,0 +1,50 @@
+{
+    "240211003": {
+        "student_no": "240211003",
+        "name": "Mehmet Akif",
+        "surname": "AKKO\u00c7",
+        "department": "Yaz\u0131l\u0131m",
+        "class": "2",
+        "skills": ["php", "html", "css", "sql", "jquery", "boostrap"],
+        "email": "mehmetakif.akkoc@asu.edu.tr",
+        "phone": "5000000001",
+        "cv_path": "",
+        "updated_at": "2026-05-20T20:41:52+00:00"
+    },
+    "240211014": {
+        "student_no": "240211014",
+        "name": "Ayse",
+        "surname": "Kaya",
+        "department": "Bilgisayar",
+        "class": "3",
+        "skills": ["java", "spring", "sql", "html"],
+        "email": "ayse.kaya@asu.edu.tr",
+        "phone": "5000000002",
+        "cv_path": "",
+        "updated_at": "2026-05-20T21:05:00+00:00"
+    },
+    "240211028": {
+        "student_no": "240211028",
+        "name": "Berk",
+        "surname": "Demir",
+        "department": "Yaz\u0131l\u0131m",
+        "class": "2",
+        "skills": ["php", "laravel", "mysql", "javascript"],
+        "email": "berk.demir@asu.edu.tr",
+        "phone": "5000000003",
+        "cv_path": "",
+        "updated_at": "2026-05-20T21:05:00+00:00"
+    },
+    "240211052": {
+        "student_no": "240211052",
+        "name": "Elif",
+        "surname": "Sari",
+        "department": "Bilgisayar",
+        "class": "4",
+        "skills": ["python", "django", "rest", "postgres"],
+        "email": "elif.sari@asu.edu.tr",
+        "phone": "5000000004",
+        "cv_path": "",
+        "updated_at": "2026-05-20T21:05:00+00:00"
+    }
+}
