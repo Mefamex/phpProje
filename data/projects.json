@@ -1,26 +1,26 @@
 [
-	{
-		"id": "prj_demo_001",
-		"title": "Staj Eslesme Portali",
-		"description": "Ogrenci ve akademisyen eslesmesini yapan temel portal.",
-		"required_skills": ["php", "html", "css", "sql"],
-		"created_by": "admin",
-		"created_at": "2026-05-20T21:05:00+00:00"
-	},
-	{
-		"id": "prj_demo_002",
-		"title": "Akilli Basvuru Takip",
-		"description": "Basvuru durumlari ve bildirim akisini yoneten panel.",
-		"required_skills": ["javascript", "php", "jquery"],
-		"created_by": "admin",
-		"created_at": "2026-05-20T21:05:00+00:00"
-	},
-	{
-		"id": "prj_demo_003",
-		"title": "Veri Raporlama Modulu",
-		"description": "Ogrenci beceri dagilimi ve eslesme raporu uretir.",
-		"required_skills": ["python", "sql", "rest"],
-		"created_by": "admin",
-		"created_at": "2026-05-20T21:05:00+00:00"
-	}
+    {
+        "id": "prj_demo_001",
+        "title": "Staj Eslesme Portali",
+        "description": "Ogrenci ve akademisyen eslesmesini yapan temel portal.",
+        "required_skills": ["php", "html", "css", "sql"],
+        "created_by": "admin",
+        "created_at": "2026-05-20T21:05:00+00:00"
+    },
+    {
+        "id": "prj_demo_002",
+        "title": "Akilli Basvuru Takip",
+        "description": "Basvuru durumlari ve bildirim akisini yoneten panel.",
+        "required_skills": ["javascript", "php", "jquery"],
+        "created_by": "admin",
+        "created_at": "2026-05-20T21:05:00+00:00"
+    },
+    {
+        "id": "prj_demo_003",
+        "title": "Veri Raporlama Modulu",
+        "description": "Ogrenci beceri dagilimi ve eslesme raporu uretir.",
+        "required_skills": ["python", "sql", "rest"],
+        "created_by": "admin",
+        "created_at": "2026-05-20T21:05:00+00:00"
+    }
 ]
