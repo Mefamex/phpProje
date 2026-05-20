@@ -62,12 +62,6 @@ $students = load_json('students.json', []);
 
 $query = sanitize($_GET['q'] ?? '');
 $filteredStudents = $students;
-if ($query !== '') {
-    $filteredStudents = array_filter($students, function ($student) use ($query) {
-        $haystack = strtolower($student['student_no'] . ' ' . $student['name'] . ' ' . $student['surname']);
-        return strpos($haystack, strtolower($query)) !== false;
-    });
-}
 ?>
 <!doctype html>
 <html lang="tr">
@@ -79,6 +73,9 @@ if ($query !== '') {
 </head>
 
 <body>
+    <div class="banner">
+        <strong>PHP dersi projesi:</strong> Internet Programciligi (Prof. Dr. Emre Avuclu) | Aksaray Universitesi, Muhendislik Fakultesi, Yazilim Muhendisligi | Ogrenci: Mehmet Akif Akkoc (240211003, 2. sinif)
+    </div>
     <div class="page">
         <header class="hero">
             <div class="split">
@@ -86,7 +83,7 @@ if ($query !== '') {
                     <h1>Ogretmen Sayfasi</h1>
                     <p class="small">Ilanlar, basvurular ve ogrenci arama.</p>
                 </div>
-                <a href="logout.php" class="badge">Cikis</a>
+                <a href="logout.php" class="logout-pill">Cikis</a>
             </div>
         </header>
         <?php if (!empty($messages)): ?>
@@ -122,117 +119,221 @@ if ($query !== '') {
             </form>
         </section>
         <section class="card">
-            <h2 class="section-title">Ilanlar</h2>
+            <div class="split">
+                <h2 class="section-title">Ilanlar</h2>
+                <div class="search-inline">
+                    <input id="project-search" type="text" placeholder="Ilan basligi, aciklama, yetenek">
+                    <button type="button" class="button secondary" id="project-search-clear">Temizle</button>
+                </div>
+            </div>
             <?php if (empty($projects)): ?>
                 <p class="small">Henuz ilan yok.</p>
             <?php else: ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Baslik</th>
-                            <th>Aciklama</th>
-                            <th>Yetenekler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($projects as $project): ?>
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars(implode(', ', $project['required_skills']), ENT_QUOTES, 'UTF-8'); ?></td>
+                                <th>Baslik</th>
+                                <th>Aciklama</th>
+                                <th>Yetenekler</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($projects as $project): ?>
+                                <?php
+                                $projectSearch = strtolower($project['title'] . ' ' . $project['description'] . ' ' . implode(' ', $project['required_skills']));
+                                ?>
+                                <tr data-project-search="<?php echo htmlspecialchars($projectSearch, ENT_QUOTES, 'UTF-8'); ?>">
+                                    <td><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars(implode(', ', $project['required_skills']), ENT_QUOTES, 'UTF-8'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
         </section>
         <section class="card">
-            <h2 class="section-title">Basvurular</h2>
+            <div class="split">
+                <h2 class="section-title">Basvurular</h2>
+                <div class="search-inline">
+                    <input id="application-search" type="text" placeholder="Ogrenci no, ilan, durum">
+                    <button type="button" class="button secondary" id="application-search-clear">Temizle</button>
+                </div>
+            </div>
             <?php if (empty($applications)): ?>
                 <p class="small">Basvuru yok.</p>
             <?php else: ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Ogrenci No</th>
-                            <th>Ilan</th>
-                            <th>Eslesme</th>
-                            <th>Durum</th>
-                            <th>Guncelle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($applications as $application): ?>
-                            <?php
-                            $projectTitle = '';
-                            foreach ($projects as $project) {
-                                if ($project['id'] === $application['project_id']) {
-                                    $projectTitle = $project['title'];
-                                    break;
-                                }
-                            }
-                            ?>
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($application['student_no'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($projectTitle, ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><span class="badge"><?php echo (int) $application['match']; ?>%</span></td>
-                                <td><?php echo htmlspecialchars($application['status'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td>
-                                    <form method="post" class="form-grid">
-                                        <input type="hidden" name="application_id" value="<?php echo htmlspecialchars($application['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                        <select name="status">
-                                            <option value="pending" <?php echo $application['status'] === 'pending' ? 'selected' : ''; ?>>pending</option>
-                                            <option value="approved" <?php echo $application['status'] === 'approved' ? 'selected' : ''; ?>>approved</option>
-                                            <option value="rejected" <?php echo $application['status'] === 'rejected' ? 'selected' : ''; ?>>rejected</option>
-                                            <option value="interview" <?php echo $application['status'] === 'interview' ? 'selected' : ''; ?>>interview</option>
-                                        </select>
-                                        <button type="submit" name="update_status" class="button secondary">Guncelle</button>
-                                    </form>
-                                </td>
+                                <th>Ogrenci No</th>
+                                <th>Ilan</th>
+                                <th>Eslesme</th>
+                                <th>Durum</th>
+                                <th>Guncelle</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($applications as $application): ?>
+                                <?php
+                                $projectTitle = '';
+                                foreach ($projects as $project) {
+                                    if ($project['id'] === $application['project_id']) {
+                                        $projectTitle = $project['title'];
+                                        break;
+                                    }
+                                }
+                                ?>
+                                <?php
+                                $applicationSearch = strtolower($application['student_no'] . ' ' . $projectTitle . ' ' . $application['status'] . ' ' . (string) $application['match']);
+                                ?>
+                                <?php
+                                $statusLabels = [
+                                    'pending' => 'Bekliyor',
+                                    'approved' => 'Onaylandi',
+                                    'rejected' => 'Reddedildi',
+                                    'interview' => 'Mulakat',
+                                ];
+                                $statusKey = $application['status'];
+                                $statusLabel = $statusLabels[$statusKey] ?? $statusKey;
+                                ?>
+                                <tr data-application-search="<?php echo htmlspecialchars($applicationSearch, ENT_QUOTES, 'UTF-8'); ?>">
+                                    <td><?php echo htmlspecialchars($application['student_no'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($projectTitle, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><span class="badge"><?php echo (int) $application['match']; ?>%</span></td>
+                                    <td>
+                                        <span class="badge status-<?php echo htmlspecialchars($statusKey, ENT_QUOTES, 'UTF-8'); ?>">
+                                            <?php echo htmlspecialchars($statusLabel, ENT_QUOTES, 'UTF-8'); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <form method="post" class="form-grid">
+                                            <input type="hidden" name="application_id" value="<?php echo htmlspecialchars($application['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                            <select name="status">
+                                                <option value="pending" <?php echo $application['status'] === 'pending' ? 'selected' : ''; ?>>pending</option>
+                                                <option value="approved" <?php echo $application['status'] === 'approved' ? 'selected' : ''; ?>>approved</option>
+                                                <option value="rejected" <?php echo $application['status'] === 'rejected' ? 'selected' : ''; ?>>rejected</option>
+                                                <option value="interview" <?php echo $application['status'] === 'interview' ? 'selected' : ''; ?>>interview</option>
+                                            </select>
+                                            <button type="submit" name="update_status" class="button secondary">Guncelle</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
         </section>
         <section class="card">
             <div class="split">
                 <h2 class="section-title">Ogrenci Listesi</h2>
-                <form method="get" class="search-inline">
-                    <input name="q" type="text" placeholder="Ogrenci no, ad, soyad" value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'UTF-8'); ?>">
-                    <button type="submit" class="button secondary">Ara</button>
-                </form>
+                <div class="search-inline">
+                    <input id="student-search" name="q" type="text" placeholder="Ogrenci no, ad, soyad" value="<?php echo htmlspecialchars($query, ENT_QUOTES, 'UTF-8'); ?>">
+                    <button type="button" class="button secondary" id="student-search-clear">Temizle</button>
+                </div>
             </div>
             <?php if (empty($filteredStudents)): ?>
                 <p class="small">Ogrenci bulunamadi.</p>
             <?php else: ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Ogrenci No</th>
-                            <th>Ad</th>
-                            <th>Soyad</th>
-                            <th>Bolum</th>
-                            <th>Sinif</th>
-                            <th>Yetenekler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($filteredStudents as $student): ?>
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($student['student_no'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($student['name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($student['surname'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($student['department'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($student['class'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars(implode(', ', $student['skills']), ENT_QUOTES, 'UTF-8'); ?></td>
+                                <th>Ogrenci No</th>
+                                <th>Ad</th>
+                                <th>Soyad</th>
+                                <th>Bolum</th>
+                                <th>Sinif</th>
+                                <th>Yetenekler</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($filteredStudents as $student): ?>
+                                <?php
+                                $searchText = strtolower($student['student_no'] . ' ' . $student['name'] . ' ' . $student['surname'] . ' ' . $student['department'] . ' ' . $student['class'] . ' ' . implode(' ', $student['skills']));
+                                ?>
+                                <tr data-search="<?php echo htmlspecialchars($searchText, ENT_QUOTES, 'UTF-8'); ?>">
+                                    <td><?php echo htmlspecialchars($student['student_no'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($student['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($student['surname'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($student['department'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($student['class'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars(implode(', ', $student['skills']), ENT_QUOTES, 'UTF-8'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
         </section>
     </div>
+    <script>
+        const searchInput = document.getElementById('student-search');
+        const clearButton = document.getElementById('student-search-clear');
+        const rows = Array.from(document.querySelectorAll('tr[data-search]'));
+
+        const projectSearchInput = document.getElementById('project-search');
+        const projectClearButton = document.getElementById('project-search-clear');
+        const projectRows = Array.from(document.querySelectorAll('tr[data-project-search]'));
+
+        const applicationSearchInput = document.getElementById('application-search');
+        const applicationClearButton = document.getElementById('application-search-clear');
+        const applicationRows = Array.from(document.querySelectorAll('tr[data-application-search]'));
+
+        function applyFilter(input, rowList, attribute) {
+            if (!input) {
+                return;
+            }
+            const query = input.value.trim().toLowerCase();
+            rowList.forEach((row) => {
+                const haystack = row.getAttribute(attribute) || '';
+                row.style.display = haystack.includes(query) ? '' : 'none';
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => applyFilter(searchInput, rows, 'data-search'));
+            applyFilter(searchInput, rows, 'data-search');
+        }
+
+        if (clearButton) {
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                applyFilter(searchInput, rows, 'data-search');
+                searchInput.focus();
+            });
+        }
+
+        if (projectSearchInput) {
+            projectSearchInput.addEventListener('input', () => applyFilter(projectSearchInput, projectRows, 'data-project-search'));
+            applyFilter(projectSearchInput, projectRows, 'data-project-search');
+        }
+
+        if (projectClearButton) {
+            projectClearButton.addEventListener('click', () => {
+                projectSearchInput.value = '';
+                applyFilter(projectSearchInput, projectRows, 'data-project-search');
+                projectSearchInput.focus();
+            });
+        }
+
+        if (applicationSearchInput) {
+            applicationSearchInput.addEventListener('input', () => applyFilter(applicationSearchInput, applicationRows, 'data-application-search'));
+            applyFilter(applicationSearchInput, applicationRows, 'data-application-search');
+        }
+
+        if (applicationClearButton) {
+            applicationClearButton.addEventListener('click', () => {
+                applicationSearchInput.value = '';
+                applyFilter(applicationSearchInput, applicationRows, 'data-application-search');
+                applicationSearchInput.focus();
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -118,6 +118,9 @@ $applications = load_json('applications.json', []);
 </head>
 
 <body>
+    <div class="banner">
+        <strong>PHP dersi projesi:</strong> Internet Programciligi (Prof. Dr. Emre Avuclu) | Aksaray Universitesi, Muhendislik Fakultesi, Yazilim Muhendisligi | Ogrenci: Mehmet Akif Akkoc (240211003, 2. sinif)
+    </div>
     <div class="page">
         <header class="hero">
             <div class="split">
@@ -125,7 +128,7 @@ $applications = load_json('applications.json', []);
                     <h1>Ogrenci Sayfasi</h1>
                     <p class="small">Ogrenci No: <?php echo htmlspecialchars($studentNo, ENT_QUOTES, 'UTF-8'); ?></p>
                 </div>
-                <a href="logout.php" class="badge">Cikis</a>
+                <a href="logout.php" class="logout-pill">Cikis</a>
             </div>
         </header>
         <?php if (!empty($messages)): ?>
@@ -196,33 +199,35 @@ $applications = load_json('applications.json', []);
             <?php if (empty($projects)): ?>
                 <p class="small">Henuz ilan yok.</p>
             <?php else: ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Baslik</th>
-                            <th>Aciklama</th>
-                            <th>Yetenekler</th>
-                            <th>Eslesme</th>
-                            <th>Islem</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($projects as $project): ?>
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars(implode(', ', $project['required_skills']), ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><span class="badge"><?php echo calculate_match($student['skills'], $project['required_skills']); ?>%</span></td>
-                                <td>
-                                    <form method="post">
-                                        <input type="hidden" name="project_id" value="<?php echo htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                        <button type="submit" name="apply_project" class="button">Basvur</button>
-                                    </form>
-                                </td>
+                                <th>Baslik</th>
+                                <th>Aciklama</th>
+                                <th>Yetenekler</th>
+                                <th>Eslesme</th>
+                                <th>Islem</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($projects as $project): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars(implode(', ', $project['required_skills']), ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><span class="badge"><?php echo calculate_match($student['skills'], $project['required_skills']); ?>%</span></td>
+                                    <td>
+                                        <form method="post">
+                                            <input type="hidden" name="project_id" value="<?php echo htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                            <button type="submit" name="apply_project" class="button">Basvur</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
         </section>
         <section class="card">
@@ -235,33 +240,49 @@ $applications = load_json('applications.json', []);
             <?php if (empty($myApplications)): ?>
                 <p class="small">Basvurunuz yok.</p>
             <?php else: ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Ilan</th>
-                            <th>Durum</th>
-                            <th>Eslesme</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($myApplications as $application): ?>
-                            <?php
-                            $projectTitle = '';
-                            foreach ($projects as $project) {
-                                if ($project['id'] === $application['project_id']) {
-                                    $projectTitle = $project['title'];
-                                    break;
-                                }
-                            }
-                            ?>
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($projectTitle, ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($application['status'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><span class="badge"><?php echo (int) $application['match']; ?>%</span></td>
+                                <th>Ilan</th>
+                                <th>Durum</th>
+                                <th>Eslesme</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($myApplications as $application): ?>
+                                <?php
+                                $projectTitle = '';
+                                foreach ($projects as $project) {
+                                    if ($project['id'] === $application['project_id']) {
+                                        $projectTitle = $project['title'];
+                                        break;
+                                    }
+                                }
+                                ?>
+                                <?php
+                                $statusLabels = [
+                                    'pending' => 'Bekliyor',
+                                    'approved' => 'Onaylandi',
+                                    'rejected' => 'Reddedildi',
+                                    'interview' => 'Mulakat',
+                                ];
+                                $statusKey = $application['status'];
+                                $statusLabel = $statusLabels[$statusKey] ?? $statusKey;
+                                ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($projectTitle, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td>
+                                        <span class="badge status-<?php echo htmlspecialchars($statusKey, ENT_QUOTES, 'UTF-8'); ?>">
+                                            <?php echo htmlspecialchars($statusLabel, ENT_QUOTES, 'UTF-8'); ?>
+                                        </span>
+                                    </td>
+                                    <td><span class="badge"><?php echo (int) $application['match']; ?>%</span></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
         </section>
     </div>

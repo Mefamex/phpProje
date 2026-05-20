@@ -51,6 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <div class="banner">
+        <strong>PHP dersi projesi:</strong> Internet Programciligi (Prof. Dr. Emre Avuclu) | Aksaray Universitesi, Muhendislik Fakultesi, Yazilim Muhendisligi | Ogrenci: Mehmet Akif Akkoc (240211003, 2. sinif)
+    </div>
     <div class="page">
         <header class="hero">
             <h1>Akademik Eslesme Portali</h1>
