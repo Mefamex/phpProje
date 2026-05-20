@@ -114,121 +114,157 @@ $applications = load_json('applications.json', []);
 <head>
     <meta charset="utf-8">
     <title>Ogrenci Sayfasi</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1>Ogrenci Sayfasi</h1>
-    <p>Ogrenci No: <?php echo htmlspecialchars($studentNo, ENT_QUOTES, 'UTF-8'); ?></p>
-    <p><a href="logout.php">Cikis</a></p>
-    <?php if (!empty($messages)): ?>
-        <ul>
-            <?php foreach ($messages as $message): ?>
-                <li><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-    <?php if (!empty($errors)): ?>
-        <ul>
-            <?php foreach ($errors as $error): ?>
-                <li><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-    <h2>Profil Bilgileri</h2>
-    <form method="post">
-        <label>Ad</label>
-        <input name="name" type="text" value="<?php echo htmlspecialchars($student['name'], ENT_QUOTES, 'UTF-8'); ?>">
-        <label>Soyad</label>
-        <input name="surname" type="text" value="<?php echo htmlspecialchars($student['surname'], ENT_QUOTES, 'UTF-8'); ?>">
-        <label>Bolum</label>
-        <input name="department" type="text" value="<?php echo htmlspecialchars($student['department'], ENT_QUOTES, 'UTF-8'); ?>">
-        <label>Sinif</label>
-        <input name="class" type="text" value="<?php echo htmlspecialchars($student['class'], ENT_QUOTES, 'UTF-8'); ?>">
-        <label>E-posta</label>
-        <input name="email" type="email" value="<?php echo htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8'); ?>">
-        <label>Telefon</label>
-        <input name="phone" type="text" value="<?php echo htmlspecialchars($student['phone'], ENT_QUOTES, 'UTF-8'); ?>">
-        <label>Yetenekler (virgul ile ayir)</label>
-        <input name="skills" type="text" value="<?php echo htmlspecialchars(implode(', ', $student['skills']), ENT_QUOTES, 'UTF-8'); ?>">
-        <button type="submit" name="save_profile">Kaydet</button>
-    </form>
-    <h2>CV Yukle</h2>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="cv_file" accept="application/pdf" required>
-        <button type="submit" name="upload_cv">Yukle</button>
-    </form>
-    <?php if (!empty($student['cv_path'])): ?>
-        <p>Mevcut CV: <?php echo htmlspecialchars($student['cv_path'], ENT_QUOTES, 'UTF-8'); ?></p>
-    <?php endif; ?>
-    <h2>Ilanlar</h2>
-    <?php if (empty($projects)): ?>
-        <p>Henuz ilan yok.</p>
-    <?php else: ?>
-        <table border="1" cellpadding="6">
-            <thead>
-                <tr>
-                    <th>Baslik</th>
-                    <th>Aciklama</th>
-                    <th>Yetenekler</th>
-                    <th>Eslesme</th>
-                    <th>Islem</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($projects as $project): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars(implode(', ', $project['required_skills']), ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo calculate_match($student['skills'], $project['required_skills']); ?>%</td>
-                        <td>
-                            <form method="post">
-                                <input type="hidden" name="project_id" value="<?php echo htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                <button type="submit" name="apply_project">Basvur</button>
-                            </form>
-                        </td>
-                    </tr>
+    <div class="page">
+        <header class="hero">
+            <div class="split">
+                <div>
+                    <h1>Ogrenci Sayfasi</h1>
+                    <p class="small">Ogrenci No: <?php echo htmlspecialchars($studentNo, ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+                <a href="logout.php" class="badge">Cikis</a>
+            </div>
+        </header>
+        <?php if (!empty($messages)): ?>
+            <div class="alert success">
+                <?php foreach ($messages as $message): ?>
+                    <div><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></div>
                 <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
-    <h2>Basvurularim</h2>
-    <?php
-    $myApplications = array_filter($applications, function ($application) use ($studentNo) {
-        return $application['student_no'] === $studentNo;
-    });
-    ?>
-    <?php if (empty($myApplications)): ?>
-        <p>Basvurunuz yok.</p>
-    <?php else: ?>
-        <table border="1" cellpadding="6">
-            <thead>
-                <tr>
-                    <th>Ilan</th>
-                    <th>Durum</th>
-                    <th>Eslesme</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($myApplications as $application): ?>
-                    <?php
-                    $projectTitle = '';
-                    foreach ($projects as $project) {
-                        if ($project['id'] === $application['project_id']) {
-                            $projectTitle = $project['title'];
-                            break;
-                        }
-                    }
-                    ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($projectTitle, ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($application['status'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo (int) $application['match']; ?>%</td>
-                    </tr>
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($errors)): ?>
+            <div class="alert error">
+                <?php foreach ($errors as $error): ?>
+                    <div><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
                 <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <section class="grid two">
+            <div class="card">
+                <h2 class="section-title">Profil Bilgileri</h2>
+                <form method="post" class="form-grid">
+                    <div class="field">
+                        <label>Ad</label>
+                        <input name="name" type="text" value="<?php echo htmlspecialchars($student['name'], ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+                    <div class="field">
+                        <label>Soyad</label>
+                        <input name="surname" type="text" value="<?php echo htmlspecialchars($student['surname'], ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+                    <div class="field">
+                        <label>Bolum</label>
+                        <input name="department" type="text" value="<?php echo htmlspecialchars($student['department'], ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+                    <div class="field">
+                        <label>Sinif</label>
+                        <input name="class" type="text" value="<?php echo htmlspecialchars($student['class'], ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+                    <div class="field">
+                        <label>E-posta</label>
+                        <input name="email" type="email" value="<?php echo htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+                    <div class="field">
+                        <label>Telefon</label>
+                        <input name="phone" type="text" value="<?php echo htmlspecialchars($student['phone'], ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+                    <div class="field">
+                        <label>Yetenekler (virgul ile ayir)</label>
+                        <input name="skills" type="text" value="<?php echo htmlspecialchars(implode(', ', $student['skills']), ENT_QUOTES, 'UTF-8'); ?>">
+                    </div>
+                    <button type="submit" name="save_profile" class="button">Kaydet</button>
+                </form>
+            </div>
+            <div class="card alt">
+                <h2 class="section-title">CV Yukle</h2>
+                <form method="post" enctype="multipart/form-data" class="form-grid">
+                    <div class="field">
+                        <label>PDF Dosyasi</label>
+                        <input type="file" name="cv_file" accept="application/pdf" required>
+                    </div>
+                    <button type="submit" name="upload_cv" class="button secondary">Yukle</button>
+                </form>
+                <?php if (!empty($student['cv_path'])): ?>
+                    <p class="small">Mevcut CV: <?php echo htmlspecialchars($student['cv_path'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <?php endif; ?>
+            </div>
+        </section>
+        <section class="card">
+            <h2 class="section-title">Ilanlar</h2>
+            <?php if (empty($projects)): ?>
+                <p class="small">Henuz ilan yok.</p>
+            <?php else: ?>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Baslik</th>
+                            <th>Aciklama</th>
+                            <th>Yetenekler</th>
+                            <th>Eslesme</th>
+                            <th>Islem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($projects as $project): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?php echo htmlspecialchars(implode(', ', $project['required_skills']), ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><span class="badge"><?php echo calculate_match($student['skills'], $project['required_skills']); ?>%</span></td>
+                                <td>
+                                    <form method="post">
+                                        <input type="hidden" name="project_id" value="<?php echo htmlspecialchars($project['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        <button type="submit" name="apply_project" class="button">Basvur</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </section>
+        <section class="card">
+            <h2 class="section-title">Basvurularim</h2>
+            <?php
+            $myApplications = array_filter($applications, function ($application) use ($studentNo) {
+                return $application['student_no'] === $studentNo;
+            });
+            ?>
+            <?php if (empty($myApplications)): ?>
+                <p class="small">Basvurunuz yok.</p>
+            <?php else: ?>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ilan</th>
+                            <th>Durum</th>
+                            <th>Eslesme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($myApplications as $application): ?>
+                            <?php
+                            $projectTitle = '';
+                            foreach ($projects as $project) {
+                                if ($project['id'] === $application['project_id']) {
+                                    $projectTitle = $project['title'];
+                                    break;
+                                }
+                            }
+                            ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($projectTitle, ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?php echo htmlspecialchars($application['status'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><span class="badge"><?php echo (int) $application['match']; ?>%</span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </section>
+    </div>
 </body>
 
 </html>

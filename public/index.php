@@ -47,32 +47,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <title>Giris</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1>Giris</h1>
-    <?php if (!empty($errors)): ?>
-        <ul>
-            <?php foreach ($errors as $error): ?>
-                <li><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-    <h2>Ogrenci Girisi</h2>
-    <form method="post">
-        <label for="student_no">Ogrenci No</label>
-        <input id="student_no" name="student_no" type="text" value="240211003" required>
-        <button type="submit" name="student_login">Giris Yap</button>
-    </form>
-    <h2>Ogretmen Girisi</h2>
-    <form method="post">
-        <label for="teacher_username">Kullanici Adi</label>
-        <input id="teacher_username" name="teacher_username" type="text" value="admin" required>
-        <label for="teacher_password">Sifre</label>
-        <input id="teacher_password" name="teacher_password" type="password" value="admin123" required>
-        <button type="submit" name="teacher_login">Giris Yap</button>
-    </form>
-    <p>Varsayilan ogretmen: admin / admin123</p>
+    <div class="page">
+        <header class="hero">
+            <h1>Akademik Eslesme Portali</h1>
+            <p>Ogrenci ve ogretmen girisi icin hizli ve guvenli erisim.</p>
+        </header>
+        <?php if (!empty($errors)): ?>
+            <div class="alert error">
+                <?php foreach ($errors as $error): ?>
+                    <div><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <main class="grid two">
+            <section class="card">
+                <h2 class="section-title">Ogrenci Girisi</h2>
+                <form method="post" class="form-grid">
+                    <div class="field">
+                        <label for="student_no">Ogrenci No</label>
+                        <input id="student_no" name="student_no" type="text" value="240211003" required>
+                    </div>
+                    <button type="submit" name="student_login" class="button">Giris Yap</button>
+                </form>
+            </section>
+            <section class="card alt">
+                <h2 class="section-title">Ogretmen Girisi</h2>
+                <form method="post" class="form-grid">
+                    <div class="field">
+                        <label for="teacher_username">Kullanici Adi</label>
+                        <input id="teacher_username" name="teacher_username" type="text" value="admin" required>
+                    </div>
+                    <div class="field">
+                        <label for="teacher_password">Sifre</label>
+                        <input id="teacher_password" name="teacher_password" type="password" value="admin123" required>
+                    </div>
+                    <button type="submit" name="teacher_login" class="button secondary">Giris Yap</button>
+                </form>
+            </section>
+        </main>
+    </div>
 </body>
 
 </html>

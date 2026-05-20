@@ -46,5 +46,53 @@
         "phone": "5000000004",
         "cv_path": "",
         "updated_at": "2026-05-20T21:05:00+00:00"
+    },
+    "240211064": {
+        "student_no": "240211064",
+        "name": "Mert",
+        "surname": "Yilmaz",
+        "department": "Yaz\u0131l\u0131m",
+        "class": "1",
+        "skills": ["html", "css", "javascript"],
+        "email": "mert.yilmaz@asu.edu.tr",
+        "phone": "5000000005",
+        "cv_path": "",
+        "updated_at": "2026-05-20T21:20:00+00:00"
+    },
+    "240211077": {
+        "student_no": "240211077",
+        "name": "Zeynep",
+        "surname": "Aydin",
+        "department": "Bilgisayar",
+        "class": "3",
+        "skills": ["c", "c++", "algorithms", "linux"],
+        "email": "zeynep.aydin@asu.edu.tr",
+        "phone": "5000000006",
+        "cv_path": "",
+        "updated_at": "2026-05-20T21:20:00+00:00"
+    },
+    "240211089": {
+        "student_no": "240211089",
+        "name": "Eren",
+        "surname": "Kilic",
+        "department": "Yaz\u0131l\u0131m",
+        "class": "2",
+        "skills": ["node", "express", "mongodb", "javascript"],
+        "email": "eren.kilic@asu.edu.tr",
+        "phone": "5000000007",
+        "cv_path": "",
+        "updated_at": "2026-05-20T21:20:00+00:00"
+    },
+    "240211094": {
+        "student_no": "240211094",
+        "name": "Derya",
+        "surname": "Cetin",
+        "department": "Bilgisayar",
+        "class": "4",
+        "skills": ["python", "data", "ml", "sql"],
+        "email": "derya.cetin@asu.edu.tr",
+        "phone": "5000000008",
+        "cv_path": "",
+        "updated_at": "2026-05-20T21:20:00+00:00"
     }
 }

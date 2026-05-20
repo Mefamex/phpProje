@@ -22,5 +22,29 @@
         "required_skills": ["python", "sql", "rest"],
         "created_by": "admin",
         "created_at": "2026-05-20T21:05:00+00:00"
+    },
+    {
+        "id": "prj_demo_004",
+        "title": "CV Yonetimi",
+        "description": "Ogrencilerin CV yukleme ve dogrulama akislarini yonetir.",
+        "required_skills": ["php", "files", "security"],
+        "created_by": "admin",
+        "created_at": "2026-05-20T21:20:00+00:00"
+    },
+    {
+        "id": "prj_demo_005",
+        "title": "API Entegrasyon",
+        "description": "Harici servislerden veri cekip portale aktarim saglar.",
+        "required_skills": ["rest", "javascript", "node"],
+        "created_by": "admin",
+        "created_at": "2026-05-20T21:20:00+00:00"
+    },
+    {
+        "id": "prj_demo_006",
+        "title": "Ogrenci Analitik Paneli",
+        "description": "Ogrenci aktiviteleri ve eslesme oranlarini gosterir.",
+        "required_skills": ["sql", "python", "data"],
+        "created_by": "admin",
+        "created_at": "2026-05-20T21:20:00+00:00"
     }
 ]
