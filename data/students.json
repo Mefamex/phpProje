@@ -7,7 +7,7 @@
         "class": "2",
         "skills": ["php", "html", "css", "sql", "jquery", "boostrap"],
         "email": "mehmetakif.akkoc@asu.edu.tr",
-        "phone": "5000000001",
+        "phone": "5394156677",
         "cv_path": "",
         "updated_at": "2026-05-20T20:41:52+00:00"
     },
@@ -19,7 +19,7 @@
         "class": "3",
         "skills": ["java", "spring", "sql", "html"],
         "email": "ayse.kaya@asu.edu.tr",
-        "phone": "5000000002",
+        "phone": "5301112233",
         "cv_path": "",
         "updated_at": "2026-05-20T21:05:00+00:00"
     },
@@ -31,7 +31,7 @@
         "class": "2",
         "skills": ["php", "laravel", "mysql", "javascript"],
         "email": "berk.demir@asu.edu.tr",
-        "phone": "5000000003",
+        "phone": "5312223344",
         "cv_path": "",
         "updated_at": "2026-05-20T21:05:00+00:00"
     },
@@ -43,7 +43,7 @@
         "class": "4",
         "skills": ["python", "django", "rest", "postgres"],
         "email": "elif.sari@asu.edu.tr",
-        "phone": "5000000004",
+        "phone": "5323334455",
         "cv_path": "",
         "updated_at": "2026-05-20T21:05:00+00:00"
     },
@@ -55,7 +55,7 @@
         "class": "1",
         "skills": ["html", "css", "javascript"],
         "email": "mert.yilmaz@asu.edu.tr",
-        "phone": "5000000005",
+        "phone": "5334445566",
         "cv_path": "",
         "updated_at": "2026-05-20T21:20:00+00:00"
     },
@@ -67,7 +67,7 @@
         "class": "3",
         "skills": ["c", "c++", "algorithms", "linux"],
         "email": "zeynep.aydin@asu.edu.tr",
-        "phone": "5000000006",
+        "phone": "5345556677",
         "cv_path": "",
         "updated_at": "2026-05-20T21:20:00+00:00"
     },
@@ -79,7 +79,7 @@
         "class": "2",
         "skills": ["node", "express", "mongodb", "javascript"],
         "email": "eren.kilic@asu.edu.tr",
-        "phone": "5000000007",
+        "phone": "5356667788",
         "cv_path": "",
         "updated_at": "2026-05-20T21:20:00+00:00"
     },
@@ -91,7 +91,7 @@
         "class": "4",
         "skills": ["python", "data", "ml", "sql"],
         "email": "derya.cetin@asu.edu.tr",
-        "phone": "5000000008",
+        "phone": "5367778899",
         "cv_path": "",
         "updated_at": "2026-05-20T21:20:00+00:00"
     }
