@@ -88,7 +88,7 @@ a:hover {
     border-radius: 16px;
     padding: 20px;
     box-shadow: var(--shadow);
-    margin-block: 1rem;
+    margin-block: 2rem;
 }
 
 .card.alt {
